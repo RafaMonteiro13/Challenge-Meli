@@ -1,12 +1,10 @@
 import json
-
 import mysql.connector
 
 class Database:
 
     @staticmethod
     def connection():
-
         with open('properties.json', 'r') as f:
             credentials = json.load(f)
             db_user = credentials["db_user"]
@@ -58,13 +56,9 @@ class Database:
 
         mycursor.execute(sql)
 
-        # Função para inserir os dados na base de dados
-
     @staticmethod
     def insertData(file):
-        # print(file)
-
-        print(file.name)
+        print(f'\n📂 Processando arquivo: {file.name}')
         if Database.selectById(file.id, 'files') is False:
 
             mydb = Database.connection()
@@ -75,13 +69,10 @@ class Database:
             val = (file.id, file.name, file.mimeType, file.owners, file.modifiedTime, str(file.shared))
             mycursor.execute(sql, val)
             mydb.commit()
-            print(mycursor.rowcount, "record inserted.")
-            print(f'O arquivo {file.name} foi gravado na base de dados!')
-            print('-=' * 100)
+
+            print(f'✅ Arquivo {file.name} foi gravado na base de dados com sucesso!')
         else:
-            print('-=' * 50)
-            print(f'O item {file.name} já está salvo na base de dados!')
-            print('-=' * 50)
+            print(f'⚠️  O arquivo {file.name} já está salvo na base de dados.')
 
     @staticmethod
     def selectAll():
@@ -100,10 +91,8 @@ class Database:
         mycursor = mydb.cursor()
 
         mycursor.execute(f"SELECT * FROM {table} WHERE id = '{fileId}'")
-
         result = mycursor.fetchone()
 
-        print(result)
         if result is None:
             return False
         else:
@@ -111,7 +100,7 @@ class Database:
 
     @staticmethod
     def insertDataLog(file):
-        print(f'Inserindo na base de dados logFiles')
+        print(f'\n📝 Inserindo log do arquivo: {file.name}')
         mydb = Database.connection()
         mycursor = mydb.cursor()
 
@@ -120,10 +109,9 @@ class Database:
             val = (file.id, file.name, file.shared, file.owners)
             mycursor.execute(sql, val)
             mydb.commit()
-            print(mycursor.rowcount, "Data inserido na base de dados logFiles!")
-            print('-=' * 100)
+            print(f'✅ Log do arquivo {file.name} inserido na base de dados logFiles.')
         else:
-            print("Arquivo já existe na base!")
+            print(f'⚠️  O log do arquivo {file.name} já existe na base de dados.')
 
     @staticmethod
     def fileUpdate(fileId):
@@ -133,4 +121,4 @@ class Database:
         sql = f"UPDATE files SET visibility='False' WHERE id='{fileId}'"
         mycursor.execute(sql)
         mydb.commit()
-        print(mycursor.rowcount, "record(s) affected")
+        print(f'🔒 Visibilidade do arquivo com ID {fileId} atualizada para restrito.')
