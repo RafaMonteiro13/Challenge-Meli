@@ -22,7 +22,7 @@ Esta aplicación debe ser desarrollada en Python y deberá contar con tests que 
 
 ## Pré - Requisitos
 
-Para ejecutar el código, descarga el código de este repositorio de GitHub:
+Para ejecutar el código, descarga el código de este repositorio de GitHub: https://github.com/RafaMonteiro13/Challenge-Meli/
 
 ### Requisitos para ejecutar el código:
 
