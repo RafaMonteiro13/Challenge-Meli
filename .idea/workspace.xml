@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a418d313-95d0-4075-9d81-684f8f2d2a92" name="Changes" comment="Projeto concluido.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/token.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
