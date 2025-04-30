@@ -15,7 +15,7 @@ Bônus:
 * Dockerizar a aplicação.
 
 ## Pré - Requisitos
-Para executar o código, faça o download do código neste repositorio do GitHub:
+Para executar o código, faça o download do código neste repositorio do GitHub: https://github.com/RafaMonteiro13/Challenge-Meli/
 
 ## Requisitos para executar o código:
 - Python
