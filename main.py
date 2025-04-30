@@ -47,31 +47,63 @@ def main():
 
         print('\n📂 Lista de arquivos encontrados no Drive:')
         for item in items:
-            file = File(item['id'], item['name'], item['owners'][0]['emailAddress'], item['shared'],
-                        item['modifiedTime'], item['mimeType'])
+            file = File(
+                item['id'],
+                item['name'],
+                item['owners'][0]['emailAddress'],
+                item['shared'],
+                item['modifiedTime'],
+                item['mimeType']
+            )
             Database.insertData(file)
 
         print('\n✅ Todos os arquivos foram processados e inseridos na base de dados.')
 
         print('\n🔍 Verificando arquivos compartilhados...\n')
-        for item in items:
-            fileHist = File(item['id'], item['name'], item['owners'][0]['emailAddress'], item['shared'], None, None)
-            if fileHist.shared is True:
-                print(f'🔗 Arquivo compartilhado: {fileHist.name}')
-                try:
-                    Database.insertDataLog(fileHist)
-                    service.permissions().delete(fileId=fileHist.id, permissionId='anyoneWithLink').execute()
-                    send_email(fileHist)
-                    Database.fileUpdate(fileHist.id)
-                except Exception as e:
-                    if 'Permission not found' in str(e):
-                        print(f'ℹ️  O arquivo "{fileHist.name}" já está restrito.')
-                    else:
-                        print(f'❌ Erro ao processar "{fileHist.name}": {e}')
-            else:
-                print(f'✔️  O arquivo "{fileHist.name}" já está restrito e não requer ação.')
+        try:
+            for item in items:
+                fileHist = File(
+                    item['id'],
+                    item['name'],
+                    item['owners'][0]['emailAddress'],
+                    item['shared'],
+                    None,
+                    None
+                )
+
+                if fileHist.shared is True:
+                    print(f'\n🔗 Arquivo compartilhado: {fileHist.name}')
+                    print(f'{(fileHist.id, fileHist.name, str(fileHist.shared), fileHist.owners)}')
+
+                    try:
+                        print(f'\n📝 Inserindo log do arquivo: {fileHist.name}')
+                        Database.insertDataLog(fileHist)
+
+                        # Tenta deletar a permissão de compartilhamento
+                        service.permissions().delete(
+                            fileId=fileHist.id,
+                            permissionId='anyoneWithLink'
+                        ).execute()
+
+                        send_email(fileHist)
+                        Database.fileUpdate(fileHist.id)
+
+                        print(f'🔒 Visibilidade do arquivo com ID {fileHist.id} atualizada para restrito.\n')
+
+                    except Exception as e:
+                        if 'Permission not found' in str(e):
+                            print(f'⚠️ O arquivo "{fileHist.name}" já está restrito.\n')
+                        else:
+                            print(f'❌ Erro ao processar o arquivo "{fileHist.name}": {e}\n')
+
+                else:
+                    print(f'ℹ️ O arquivo "{fileHist.name}" já está restrito e não requer mais ação.\n')
+
+        except Exception as error:
+            print(f'❌ Erro ao buscar ou processar arquivos: {error}')
+
     except Exception as error:
-        print(f'❌ Erro ao buscar ou processar arquivos: {error}')
+        print(f'❌ Erro ao listar arquivos do Drive: {error}')
 
 
 if __name__ == '__main__':

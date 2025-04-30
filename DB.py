@@ -58,21 +58,21 @@ class Database:
 
     @staticmethod
     def insertData(file):
-        print(f'\n📂 Processando arquivo: {file.name}')
-        if Database.selectById(file.id, 'files') is False:
+        print(f'\n📄 Arquivo encontrado: {file.name}')
+        print(f'{(file.id, file.name, file.mimeType, file.owners, file.modifiedTime, str(file.shared))}')
 
+        if Database.selectById(file.id, 'files') is False:
             mydb = Database.connection()
             mycursor = mydb.cursor()
 
-            sql = "INSERT INTO files (id, name, extension, owner, lastModify, visibility) " \
-                  "VALUES (%s, %s, %s, %s, %s, %s)"
+            sql = "INSERT INTO files (id, name, extension, owner, lastModify, visibility) VALUES (%s, %s, %s, %s, %s, %s)"
             val = (file.id, file.name, file.mimeType, file.owners, file.modifiedTime, str(file.shared))
             mycursor.execute(sql, val)
             mydb.commit()
 
-            print(f'✅ Arquivo {file.name} foi gravado na base de dados com sucesso!')
+            print(f'✅ O arquivo "{file.name}" foi gravado na base de dados.\n')
         else:
-            print(f'⚠️  O arquivo {file.name} já está salvo na base de dados.')
+            print(f'ℹ️ O arquivo "{file.name}" já está salvo na base de dados.\n')
 
     @staticmethod
     def selectAll():
@@ -100,7 +100,6 @@ class Database:
 
     @staticmethod
     def insertDataLog(file):
-        print(f'\n📝 Inserindo log do arquivo: {file.name}')
         mydb = Database.connection()
         mycursor = mydb.cursor()
 
@@ -121,4 +120,3 @@ class Database:
         sql = f"UPDATE files SET visibility='False' WHERE id='{fileId}'"
         mycursor.execute(sql)
         mydb.commit()
-        print(f'🔒 Visibilidade do arquivo com ID {fileId} atualizada para restrito.')
