@@ -123,15 +123,13 @@ class Database:
         mydb = Database.connection()
         mycursor = mydb.cursor()
 
-        # Executa a consulta filtrando pelo ID
-        mycursor.execute(f"SELECT * FROM {table} WHERE id = '{fileId}'")
+        # Consulta com parâmetro seguro (evita SQL Injection)
+        query = f"SELECT * FROM {table} WHERE id = %s"
+        mycursor.execute(query, (fileId,))
         result = mycursor.fetchone()
 
         # Retorna True se encontrou, False se não encontrou
-        if result is None:
-            return False
-        else:
-            return True
+        return result is not None
 
     # Insere um novo log na tabela 'logFiles' (se ainda não existir)
     @staticmethod
