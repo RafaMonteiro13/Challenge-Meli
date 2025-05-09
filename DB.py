@@ -96,6 +96,9 @@ class Database:
             mycursor.execute(sql, val)
             mydb.commit()
 
+            # Caso o registro já existe ele informa que já esta salvo na base de dados
+            # Caso não, ele grava na base de dados
+
             print(f'✅ O arquivo "{file.name}" foi gravado na base de dados.\n')
         else:
             print(f'ℹ️ O arquivo "{file.name}" já está salvo na base de dados.\n')
