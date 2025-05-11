@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a418d313-95d0-4075-9d81-684f8f2d2a92" name="Changes" comment="Commit">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="a418d313-95d0-4075-9d81-684f8f2d2a92" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -85,11 +83,38 @@
       <option name="project" value="LOCAL" />
       <updated>1746020404781</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Comentando o código">
+      <option name="closed" value="true" />
+      <created>1746811825874</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1746811825874</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Adicionando comentário para desmonstrar onde que o código realiza a verificação de duplicatas.">
+      <option name="closed" value="true" />
+      <created>1746812113592</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1746812113592</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Melhorando o método selectById para evitar SQL Injection">
+      <option name="closed" value="true" />
+      <created>1746812332492</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1746812332492</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Projeto concluido." />
-    <option name="LAST_COMMIT_MESSAGE" value="Projeto concluido." />
+    <MESSAGE value="Comentando o código" />
+    <MESSAGE value="Adicionando comentário para desmonstrar onde que o código realiza a verificação de duplicatas." />
+    <MESSAGE value="Melhorando o método selectById para evitar SQL Injection" />
+    <option name="LAST_COMMIT_MESSAGE" value="Melhorando o método selectById para evitar SQL Injection" />
   </component>
 </project>
