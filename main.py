@@ -1,11 +1,18 @@
 import base64
 import sys
+import logging
 from email.message import EmailMessage
 
 from DriveAPI import api
 from File import *
 from DB import Database
 
+# Configura log apenas para arquivo (erros e exceções)
+logging.basicConfig(
+    filename='Logs.log',
+    level=logging.ERROR,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 # Função responsável por enviar um email para o dono do arquivo, informando que a visibilidade foi alterada
 def send_email(file):
@@ -38,6 +45,7 @@ def send_email(file):
 
     except Exception as e:
         print(f'❌ Erro ao enviar o email para "{file.owners}": {e}')
+        logging.error(f'Erro ao enviar o email para "{file.owners}": {e}')
 
 
 # Função principal da aplicação — responsável por executar todo o fluxo
@@ -49,6 +57,7 @@ def main():
         service = api('drive')
     except Exception as e:
         print(f'❌ Erro ao conectar à API do Google Drive: {e}')
+        logging.error(f'Erro ao conectar à API do Google Drive: {e}')
         sys.exit(1)
 
     # Cria o banco de dados e as tabelas (se ainda não existirem)
@@ -59,6 +68,7 @@ def main():
         print('✅ Banco de dados e tabelas criados (ou já existentes).')
     except Exception as error:
         print(f'❌ Erro ao criar banco de dados ou tabelas: {error}')
+        logging.error(f'Erro ao criar banco de dados ou tabelas: {error}')
         sys.exit(1)
 
     # Tenta listar os arquivos do Google Drive
@@ -87,10 +97,12 @@ def main():
                 Database.insertData(file)
             except KeyError as e:
                 print(f'⚠️ Dados incompletos no arquivo {item.get("name", "desconhecido")}: campo ausente {e}')
+                logging.error(f'Dados incompletos no arquivo {item.get("name", "desconhecido")}: campo ausente {e}')
             except Exception as e:
                 print(f'❌ Erro ao processar o arquivo {item.get("name", "desconhecido")}: {e}')
+                logging.error(f'Erro ao processar o arquivo {item.get("name", "desconhecido")}: {e}')
 
-        print('\n✅ Todos os arquivos foram processados e inseridos na base de dados.')
+        print('\n✅ Todos os arquivos foram processados.')
 
         # Verifica arquivos que estão compartilhados publicamente
         print('\n🔍 Verificando arquivos compartilhados...\n')
@@ -136,6 +148,7 @@ def main():
                             print(f'⚠️ O arquivo "{fileHist.name}" já está restrito.\n')
                         else:
                             print(f'❌ Erro ao processar o arquivo "{fileHist.name}": {e}\n')
+                            logging.error(f'Erro ao processar o arquivo "{fileHist.name}": {e}')
 
                 else:
                     # Caso o arquivo já esteja restrito
@@ -143,11 +156,14 @@ def main():
 
             except KeyError as e:
                 print(f'⚠️ Dados incompletos no arquivo {item.get("name", "desconhecido")}: campo ausente {e}')
+                logging.error(f'Dados incompletos no arquivo {item.get("name", "desconhecido")}: campo ausente {e}')
             except Exception as e:
                 print(f'❌ Erro ao verificar o arquivo {item.get("name", "desconhecido")}: {e}')
+                logging.error(f'Erro ao verificar o arquivo {item.get("name", "desconhecido")}: {e}')
 
     except Exception as error:
         print(f'❌ Erro ao listar ou processar arquivos do Drive: {error}')
+        logging.error(f'Erro ao listar ou processar arquivos do Drive: {error}')
         sys.exit(1)
 
 

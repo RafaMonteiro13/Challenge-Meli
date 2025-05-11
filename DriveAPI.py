@@ -1,5 +1,13 @@
 import os.path
 import sys
+import logging
+
+# Configura log apenas para arquivo (erros e exceções)
+logging.basicConfig(
+    filename='Logs.log',
+    level=logging.ERROR,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 # Bibliotecas do Google para autenticação e API
 from google.auth.transport.requests import Request
@@ -26,6 +34,7 @@ def api(api):
                 creds = Credentials.from_authorized_user_file('token.json', SCOPES)
             except Exception as e:
                 print(f"⚠️ Erro ao carregar o arquivo 'token.json': {e}")
+                logging.error(f"Erro ao carregar o arquivo 'token.json': {e}")
                 creds = None
 
         # Se não há credenciais ou as credenciais são inválidas (expiradas ou ausentes)
@@ -36,6 +45,7 @@ def api(api):
                     creds.refresh(Request())
                 except GoogleAuthError as e:
                     print(f"⚠️ Erro ao renovar o token de acesso: {e}")
+                    logging.error(f"Erro ao renovar o token de acesso: {e}")
                     creds = None
             else:
                 try:
@@ -47,9 +57,11 @@ def api(api):
                     creds = flow.run_local_server(port=0)
                 except FileNotFoundError:
                     print("❌ Arquivo 'client_secret.json' não encontrado. Verifique se o arquivo está no diretório correto.")
+                    logging.error("Arquivo 'client_secret.json' não encontrado.")
                     sys.exit(1)
                 except Exception as e:
                     print(f"❌ Erro ao realizar o fluxo de autenticação OAuth2: {e}")
+                    logging.error(f"Erro ao realizar o fluxo de autenticação OAuth2: {e}")
                     sys.exit(1)
 
             # Salva as novas credenciais no arquivo 'token.json' para usos futuros (evita reautenticar sempre)
@@ -58,6 +70,7 @@ def api(api):
                     token.write(creds.to_json())
             except Exception as e:
                 print(f"⚠️ Erro ao salvar o token no arquivo 'token.json': {e}")
+                logging.error(f"Erro ao salvar o token no arquivo 'token.json': {e}")
 
         # Constrói e retorna o serviço da API de acordo com o parâmetro 'api'
         try:
@@ -71,8 +84,10 @@ def api(api):
                 return service
         except GoogleAuthError as e:
             print(f"❌ Erro ao construir o serviço da API ({api}): {e}")
+            logging.error(f"Erro ao construir o serviço da API ({api}): {e}")
             sys.exit(1)
 
     except Exception as e:
         print(f"❌ Ocorreu um erro inesperado durante o processo de autenticação: {e}")
+        logging.error(f"Ocorreu um erro inesperado durante o processo de autenticação: {e}")
         sys.exit(1)

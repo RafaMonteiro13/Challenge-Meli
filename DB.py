@@ -2,8 +2,12 @@ import json
 import mysql.connector
 import logging
 
-# Configura log (opcional mas recomendado)
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# Configura log apenas para arquivo (erros e exceções)
+logging.basicConfig(
+    filename='Logs.log',
+    level=logging.ERROR,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 class Database:
     # Estabelece uma conexão com o banco de dados "DriveDocuments"
